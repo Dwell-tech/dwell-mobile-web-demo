@@ -1775,6 +1775,68 @@ const PropertyCard = ({
   </div>
 )
 
+const HomeListingCard = ({
+  img,
+  title,
+  price,
+  rating = '4.8',
+  reviews = '50',
+  tag = 'Promoted',
+  onSelect,
+}: {
+  img: string
+  title: string
+  price: string
+  rating?: string
+  reviews?: string
+  tag?: string
+  onSelect?: () => void
+}) => (
+  <div
+    className="card clickable"
+    style={{
+      minWidth: '88%',
+      padding: 0,
+      overflow: 'hidden',
+      boxShadow: '0 10px 24px rgba(0,0,0,0.06)',
+      border: '1px solid #f1f1f1',
+    }}
+    onClick={onSelect}
+  >
+    <div
+      className="img"
+      style={{
+        height: 200,
+        backgroundImage: `url('${img}')`,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        position: 'relative',
+      }}
+    >
+        <div style={{ position: 'absolute', top: 10, left: 10, background: '#fff', padding: '4px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>
+          {tag}
+        </div>
+      <div style={{ position: 'absolute', top: 10, right: 10, background: '#fff', padding: 6, borderRadius: '50%' }}>♡</div>
+    </div>
+    <div className="body" style={{ paddingTop: 10 }}>
+      <div style={{ fontWeight: 700, color: '#111', fontSize: 15 }}>{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#6f6f6f', fontSize: 12, marginTop: 4 }}>
+        <span>⭐️ {rating} ({reviews} reviews)</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, color: '#6f6f6f', fontSize: 12 }}>
+        <span>Posted by</span>
+        <span role="img" aria-label="host">🧑‍💼</span>
+      </div>
+      <div style={{ display: 'flex', gap: 12, marginTop: 6, color: '#6f6f6f', fontSize: 12 }}>
+        <span>🛏️ 5</span>
+        <span>🛁 5</span>
+      </div>
+      <div style={{ marginTop: 8, fontWeight: 800, color: '#111' }}>{price}</div>
+      <div style={{ marginTop: 4, fontSize: 12, color: accent }}>View Details</div>
+    </div>
+  </div>
+)
+
 const renderHomeSection = (title: string, imgs: string[], onSelect?: (img: string) => void) => (
   <div className="section">
     <div className="meta-row" style={{ justifyContent: 'space-between' }}>
@@ -1783,7 +1845,7 @@ const renderHomeSection = (title: string, imgs: string[], onSelect?: (img: strin
     </div>
     <div className="carousel">
       {imgs.map((img, idx) => (
-        <PropertyCard
+        <HomeListingCard
           key={`${title}-${idx}`}
           img={img}
           title="Hov Beach Resort"
@@ -2286,13 +2348,24 @@ const InboxTab = () => (
     </div>
     <div className="section">
       <div className="label">Recent Messages</div>
-      {['Sarah (Agent)', 'Ikoyi Garden Suites', 'Uche Maintenance', 'Investment Desk'].map(
-        (c, idx) => (
-          <div key={c} className="list-line">
-            <strong>{c}</strong> — {idx === 0 ? 'New viewing time?' : 'Latest update'}
+      {[
+        { name: 'Sarah (Agent)', note: 'New viewing time?', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&q=60' },
+        { name: 'Ikoyi Garden Suites', note: 'Latest update', avatar: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=120&q=60' },
+        { name: 'Uche Maintenance', note: 'Job accepted', avatar: 'https://images.unsplash.com/photo-1502764613149-7f1d229e2300?auto=format&fit=crop&w=120&q=60' },
+        { name: 'Investment Desk', note: 'Funding progress', avatar: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=120&q=60' },
+      ].map((c) => (
+        <div key={c.name} className="list-line" style={{ display: 'flex', alignItems: 'center', gap: 10, borderBottom: 'none' }}>
+          <img
+            src={c.avatar}
+            alt={c.name}
+            style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }}
+          />
+          <div>
+            <div style={{ fontWeight: 700, color: '#111' }}>{c.name}</div>
+            <div style={{ color: '#6f6f6f', fontSize: 12 }}>{c.note}</div>
           </div>
-        ),
-      )}
+        </div>
+      ))}
     </div>
   </div>
 )
@@ -2373,20 +2446,61 @@ const ProfileTab = () => (
 
 const PropertyDetail = ({ item }: { item: DetailItem | null }) => {
   const title = item?.type === 'property' ? item.title : 'Property'
-  const img = item?.img ?? getPropertyImage(0)
+  const gallery =
+    item?.type === 'property'
+      ? [item.img, getPropertyImage(1), getPropertyImage(2)].filter(Boolean)
+      : [getPropertyImage(0), getPropertyImage(1), getPropertyImage(2)]
   const price = item?.price ?? '₦500,000 / month'
+  const [slide, setSlide] = useState(0)
+  const nextSlide = () => setSlide((s) => (s + 1) % gallery.length)
+  const prevSlide = () => setSlide((s) => (s - 1 + gallery.length) % gallery.length)
   return (
     <div className="screen">
       <TopBar showBack showLogo />
-      <div className="card">
-        <div className="img" style={{ height: 210, backgroundImage: `url('${img}')` }} />
-        <div className="body">
-          <div className="tag">Verified</div>
-          <div style={{ marginTop: 6, fontWeight: 800, color: '#111' }}>{title}</div>
-          <div style={{ color: '#6f6f6f', fontSize: 13 }}>Ikoyi, Lagos</div>
-          <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>{price}</div>
+      <div className="card" style={{ padding: 0, overflow: 'hidden', boxShadow: '0 12px 26px rgba(0,0,0,0.08)' }}>
+        <div
+          className="img"
+          style={{ height: 260, backgroundImage: `url('${gallery[slide]}')`, position: 'relative' }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              background: 'rgba(0,0,0,0.55)',
+              color: '#fff',
+              padding: '6px 10px',
+              borderRadius: 14,
+              fontSize: 12,
+            }}
+          >
+            {slide + 1} / {gallery.length}
+          </div>
+          <div style={{ position: 'absolute', bottom: 10, left: 10, display: 'flex', gap: 8 }}>
+            <button className="primary-btn filled" style={{ width: 'auto', height: 34, padding: '0 12px' }} onClick={prevSlide}>
+              Prev
+            </button>
+            <button className="primary-btn filled" style={{ width: 'auto', height: 34, padding: '0 12px' }} onClick={nextSlide}>
+              Next
+            </button>
+          </div>
+        </div>
+        <div className="body" style={{ padding: 14 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ fontWeight: 800, color: '#111', fontSize: 16 }}>{title}</div>
+                <span style={{ fontSize: 14, color: '#2b74ff' }}>✔️</span>
+              </div>
+              <div style={{ color: '#6f6f6f', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}>
+                Ikoyi, Lagos <span style={{ color: '#2b74ff', fontWeight: 600 }}>Verified</span>
+              </div>
+            </div>
+            <div style={{ color: '#6f6f6f', fontSize: 12 }}>⭐️ 4.8 (50)</div>
+          </div>
+          <div style={{ marginTop: 8, fontWeight: 800, color: '#111' }}>{price}</div>
           <div className="chip-row" style={{ marginTop: 8 }}>
-            {['3 Bed', '3 Bath', '220 sqm', 'Furnished'].map((c) => (
+            {['3 Bed', '3 Bath', '220 sqm', 'Furnished', 'Air Conditioning', 'Pet Friendly'].map((c) => (
               <div key={c} className="chip">
                 {c}
               </div>
