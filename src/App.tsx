@@ -85,6 +85,7 @@ const experienceImages = [
   'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1484156818044-c040038b0710?auto=format&fit=crop&w=900&q=60',
 ]
 
 const serviceImages = [
@@ -95,7 +96,7 @@ const serviceImages = [
 ]
 
 const investImages = [
-  'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=900&q=60',
 ]
@@ -432,7 +433,6 @@ const StatusBar = () => (
   <div className="status-bar">
     <span>9:41</span>
     <div />
-    <span>⋯</span>
   </div>
 )
 
@@ -446,11 +446,11 @@ const TopBar = ({
   trailing?: ReactNode
 }) => (
   <div className="nav-row" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      {showBack ? <div className="back-btn">{icons.back}</div> : null}
+    <div style={{ width: 40 }}>{showBack ? <div className="back-btn">{icons.back}</div> : null}</div>
+    <div style={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
       {showLogo ? <img src={logoBlack} alt="Dwell" style={{ height: 26 }} /> : null}
     </div>
-    {trailing ?? <span style={{ fontSize: 18 }}>⋯</span>}
+    <div style={{ width: 40, textAlign: 'right' }}>{trailing ?? <span />}</div>
   </div>
 )
 
@@ -1667,24 +1667,30 @@ const HomeTab = ({
       </div>
     </div>
 
-    {renderHomeSection('Promoted', propertyImages.slice(0, 3), (img) =>
-      onSelectDetail({ type: 'property', title: 'Hov Beach Resort', img, price: '₦125,000 / night' }),
-    )}
-    {renderHomeSection('Highest Ratings', propertyImages.slice(2, 5), (img) =>
-      onSelectDetail({ type: 'property', title: 'Ikoyi Garden Suites', img, price: '₦520k / month' }),
-    )}
-    {renderHomeSection('New', propertyImages.slice(1, 4), (img) =>
-      onSelectDetail({ type: 'property', title: 'Victoria Island Loft', img, price: '₦420k / month' }),
-    )}
-    {renderHomeSection('Best Hosts', propertyImages.slice(0, 2), (img) =>
-      onSelectDetail({ type: 'property', title: 'Host Collection', img, price: '₦300k / month' }),
-    )}
-    {renderHomeSection('Based on Location', propertyImages.slice(3, 5), (img) =>
-      onSelectDetail({ type: 'property', title: 'Lekki Picks', img, price: '₦280k / month' }),
-    )}
-    {renderHomeSection('Favorites', propertyImages.slice(0, 2), (img) =>
-      onSelectDetail({ type: 'property', title: 'Saved Stay', img, price: '₦200k / month' }),
-    )}
+    {renderHomeSection('Promoted', propertyImages.slice(0, 3), (img) => {
+      onSelectDetail({ type: 'property', title: 'Hov Beach Resort', img, price: '₦125,000 / night' })
+      onNavigate('property-detail')
+    })}
+    {renderHomeSection('Highest Ratings', propertyImages.slice(2, 5), (img) => {
+      onSelectDetail({ type: 'property', title: 'Ikoyi Garden Suites', img, price: '₦520k / month' })
+      onNavigate('property-detail')
+    })}
+    {renderHomeSection('New', propertyImages.slice(1, 4), (img) => {
+      onSelectDetail({ type: 'property', title: 'Victoria Island Loft', img, price: '₦420k / month' })
+      onNavigate('property-detail')
+    })}
+    {renderHomeSection('Best Hosts', propertyImages.slice(0, 2), (img) => {
+      onSelectDetail({ type: 'property', title: 'Host Collection', img, price: '₦300k / month' })
+      onNavigate('property-detail')
+    })}
+    {renderHomeSection('Based on Location', propertyImages.slice(3, 5), (img) => {
+      onSelectDetail({ type: 'property', title: 'Lekki Picks', img, price: '₦280k / month' })
+      onNavigate('property-detail')
+    })}
+    {renderHomeSection('Favorites', propertyImages.slice(0, 2), (img) => {
+      onSelectDetail({ type: 'property', title: 'Saved Stay', img, price: '₦200k / month' })
+      onNavigate('property-detail')
+    })}
 
     <HorizontalSection
       title="Experiences near you"
@@ -1698,6 +1704,8 @@ const HomeTab = ({
         title: idx % 2 === 0 ? 'Sunday Brunch Lagoon' : 'Live Music Night',
         price: idx % 2 === 0 ? '₦25,000' : '₦18,000',
         meta: 'Food & Vibes',
+        icon: idx % 2 === 0 ? '🍽️' : '🎵',
+        date: '02/03/2026',
       }))}
     />
 
@@ -1767,7 +1775,7 @@ const PropertyCard = ({
   </div>
 )
 
-const renderHomeSection = (title: string, imgs: string[]) => (
+const renderHomeSection = (title: string, imgs: string[], onSelect?: (img: string) => void) => (
   <div className="section">
     <div className="meta-row" style={{ justifyContent: 'space-between' }}>
       <div className="label" style={{ marginBottom: 0 }}>{title}</div>
@@ -1781,6 +1789,7 @@ const renderHomeSection = (title: string, imgs: string[]) => (
           title="Hov Beach Resort"
           price="₦125,000 / night"
           tag={title}
+          onSelect={onSelect ? () => onSelect(img) : undefined}
         />
       ))}
     </div>
@@ -1791,10 +1800,12 @@ const HorizontalSection = ({
   title,
   items,
   tag,
+  onSelect,
 }: {
   title: string
   tag: string
-  items: { img: string; title: string; price: string; meta: string }[]
+  items: { img: string; title: string; price: string; meta: string; icon?: string; date?: string }[]
+  onSelect?: (item: { img: string; title: string; price: string; meta: string; icon?: string; date?: string }) => void
 }) => (
   <div className="section">
     <div className="meta-row" style={{ justifyContent: 'space-between' }}>
@@ -1803,15 +1814,26 @@ const HorizontalSection = ({
     </div>
     <div className="carousel">
       {items.map((item, idx) => (
-        <div key={`${title}-${idx}`} className="card clickable" style={{ minWidth: '82%' }}>
+        <div
+          key={`${title}-${idx}`}
+          className="card clickable"
+          style={{ minWidth: '82%' }}
+          onClick={onSelect ? () => onSelect(item) : undefined}
+        >
           <div
             className="img"
             style={{ backgroundImage: `url('${item.img}')`, height: 150 }}
           />
-          <div className="body">
+          <div className="body" style={{ position: 'relative' }}>
             <div className="tag">{tag}</div>
+            {item.icon ? (
+              <span style={{ position: 'absolute', right: 8, top: 8, fontSize: 18 }}>{item.icon}</span>
+            ) : null}
             <div style={{ fontWeight: 700, color: '#111', marginTop: 6 }}>{item.title}</div>
             <div style={{ color: '#6f6f6f', fontSize: 13 }}>{item.meta}</div>
+            {item.date ? (
+              <div style={{ color: '#6f6f6f', fontSize: 12, marginTop: 4 }}>📅 {item.date}</div>
+            ) : null}
             <div style={{ marginTop: 4, fontWeight: 700, color: '#111' }}>{item.price}</div>
           </div>
         </div>
@@ -1820,15 +1842,21 @@ const HorizontalSection = ({
   </div>
 )
 
-const ExploreTab = () => {
+const ExploreTab = ({
+  onSelectDetail,
+  onNavigate,
+}: {
+  onSelectDetail: (item: DetailItem) => void
+  onNavigate: (s: Screen) => void
+}) => {
   const [filter, setFilter] = useState<string>('All')
   const items = [
     { type: 'Properties', title: 'Marina View Apartments', meta: '₦320k / month • Lekki', img: getPropertyImage(0), h: 220 },
-    { type: 'Experiences', title: 'Sunday Brunch at the Lagoon', meta: '₦25k • Victoria Island', img: experienceImages[0], h: 260 },
+    { type: 'Experiences', title: 'Sunday Brunch at the Lagoon', meta: '₦25k • Victoria Island', img: experienceImages[0], h: 260, date: '02/03/2026' },
     { type: 'Investments', title: 'Lekki Co-ownership', meta: 'Min ₦100k • 14% ROI', img: investImages[0], h: 230 },
     { type: 'Services', title: 'Uche Maintenance', meta: 'Electric + Plumbing • Lagos', img: serviceImages[0], h: 200 },
     { type: 'Properties', title: 'Ikoyi Garden Suites', meta: '₦520k / month', img: getPropertyImage(1), h: 260 },
-    { type: 'Experiences', title: 'Live Music Night', meta: '₦18k • Ikoyi', img: experienceImages[1], h: 200 },
+    { type: 'Experiences', title: 'Live Music Night', meta: '₦18k • Ikoyi', img: experienceImages[1], h: 200, date: '05/04/2026' },
     { type: 'Investments', title: 'VI Offices REIT', meta: 'Min ₦500k • 18% ROI', img: investImages[1], h: 240 },
     { type: 'Promotions', title: 'Gold Promo Bundle', meta: '10% off boosts', img: exploreImages[6], h: 190 },
     { type: 'Services', title: 'Interior Design', meta: 'Bella Interiors • Lagos', img: serviceImages[2], h: 230 },
@@ -1865,7 +1893,36 @@ const ExploreTab = () => {
       </div>
       <div className="masonry">
         {filtered.map((item, idx) => (
-          <div key={`${item.title}-${idx}`} className="card clickable">
+          <div
+            key={`${item.title}-${idx}`}
+            className="card clickable"
+            onClick={() => {
+              const detail =
+                item.type === 'Properties'
+                  ? ('property' as const)
+                  : item.type === 'Experiences'
+                    ? ('experience' as const)
+                    : item.type === 'Investments'
+                      ? ('investment' as const)
+                      : ('service' as const)
+              onSelectDetail({
+                type: detail,
+                title: item.title,
+                img: item.img,
+                price: item.meta,
+                date: item.date,
+              })
+              onNavigate(
+                detail === 'property'
+                  ? 'property-detail'
+                  : detail === 'experience'
+                    ? 'experience-detail'
+                    : detail === 'investment'
+                      ? 'investment-detail'
+                      : 'service-detail',
+              )
+            }}
+          >
             <div
               className="img"
               style={{
@@ -2314,95 +2371,92 @@ const ProfileTab = () => (
   </div>
 )
 
-const PropertyDetail = () => (
-  <div className="screen">
-    <TopBar showBack showLogo />
-    <div className="card">
-      <div
-        className="img"
-        style={{ height: 210, backgroundImage: `url('${getPropertyImage(4)}')` }}
-      />
-      <div className="body">
-        <div className="tag">Verified</div>
-        <div style={{ marginTop: 6, fontWeight: 800, color: '#111' }}>Ikoyi Garden Suites</div>
-        <div style={{ color: '#6f6f6f', fontSize: 13 }}>Ikoyi, Lagos</div>
-        <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>₦520,000 / month</div>
-        <div className="chip-row" style={{ marginTop: 8 }}>
-          {['3 Bed', '3 Bath', '220 sqm', 'Furnished'].map((c) => (
+const PropertyDetail = ({ item }: { item: DetailItem | null }) => {
+  const title = item?.type === 'property' ? item.title : 'Property'
+  const img = item?.img ?? getPropertyImage(0)
+  const price = item?.price ?? '₦500,000 / month'
+  return (
+    <div className="screen">
+      <TopBar showBack showLogo />
+      <div className="card">
+        <div className="img" style={{ height: 210, backgroundImage: `url('${img}')` }} />
+        <div className="body">
+          <div className="tag">Verified</div>
+          <div style={{ marginTop: 6, fontWeight: 800, color: '#111' }}>{title}</div>
+          <div style={{ color: '#6f6f6f', fontSize: 13 }}>Ikoyi, Lagos</div>
+          <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>{price}</div>
+          <div className="chip-row" style={{ marginTop: 8 }}>
+            {['3 Bed', '3 Bath', '220 sqm', 'Furnished'].map((c) => (
+              <div key={c} className="chip">
+                {c}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="section">
+        <div className="label">Description</div>
+        <div className="list-line">
+          Premium serviced apartment with 24/7 power, pool, gym, and dedicated concierge.
+        </div>
+        <div className="label">Amenities</div>
+        <div className="chip-row">
+          {['Pool', 'Gym', '24/7 Power', 'Security', 'Parking', 'Furnished'].map((c) => (
             <div key={c} className="chip">
               {c}
             </div>
           ))}
         </div>
       </div>
-    </div>
-    <div className="section">
-      <div className="label">Description</div>
-      <div className="list-line">
-        Premium serviced apartment with 24/7 power, pool, gym, and dedicated concierge.
+      <div className="section">
+        <div className="label">Agent</div>
+        <div className="list-line">Sarah Johnson — Verified Agent — 98% response rate</div>
+        <div className="review">⭐️⭐️⭐️⭐️☆ (4.6) • 112 reviews</div>
       </div>
-      <div className="label">Amenities</div>
-      <div className="chip-row">
-        {['Pool', 'Gym', '24/7 Power', 'Security', 'Parking', 'Furnished'].map((c) => (
-          <div key={c} className="chip">
-            {c}
-          </div>
-        ))}
+      <div className="section">
+        <div className="label">Reviews</div>
+        <div className="review-list">
+          {['Great host, smooth move-in.', 'Power was steady, location is safe.', 'Responsive agent, clean space.'].map(
+            (text) => (
+              <div key={text} className="review-card">
+                <div style={{ fontWeight: 700, color: '#111' }}>⭐️⭐️⭐️⭐️☆</div>
+                <div style={{ color: '#5a5a5a', fontSize: 13 }}>{text}</div>
+              </div>
+            ),
+          )}
+        </div>
       </div>
-    </div>
-    <div className="section">
-      <div className="label">Agent</div>
-      <div className="list-line">Sarah Johnson — Verified Agent — 98% response rate</div>
-      <div className="review">
-        ⭐️⭐️⭐️⭐️☆ (4.6) • 112 reviews
+      <div className="section">
+        <div className="label">Location</div>
+        <div className="map">
+          <div>Map preview • Lekki</div>
+        </div>
       </div>
-    </div>
-    <div className="section">
-      <div className="label">Reviews</div>
-      <div className="review-list">
-        {['Great host, smooth move-in.', 'Power was steady, location is safe.', 'Responsive agent, clean space.'].map(
-          (text) => (
-            <div key={text} className="review-card">
-              <div style={{ fontWeight: 700, color: '#111' }}>⭐️⭐️⭐️⭐️☆</div>
-              <div style={{ color: '#5a5a5a', fontSize: 13 }}>{text}</div>
-            </div>
-          ),
-        )}
-      </div>
-    </div>
-    <div className="section">
-      <div className="label">Location</div>
-      <div className="map">
-        <div>Map preview • Lekki</div>
-      </div>
-    </div>
-    <div className="section">
-      <div className="label">Similar Properties</div>
-      <div className="carousel">
-        {['Victoria Island Loft', 'Banana Island Duplex', 'Lekki Phase 1 Studio'].map((title, idx) => (
-          <div key={title} className="card" style={{ marginBottom: 0 }}>
-            <div
-              className="img"
-              style={{ backgroundImage: `url('${getPropertyImage(idx + 1)}')` }}
-            />
-            <div className="body">
-              <div className="tag">{idx === 1 ? 'For Sale' : 'For Rent'}</div>
-              <div style={{ fontWeight: 700, color: '#111', marginTop: 6 }}>{title}</div>
-              <div style={{ color: '#6f6f6f', fontSize: 13 }}>
-                {idx === 1 ? '₦120M' : '₦420k / month'}
+      <div className="section">
+        <div className="label">Similar Properties</div>
+        <div className="carousel">
+          {['Victoria Island Loft', 'Banana Island Duplex', 'Lekki Phase 1 Studio'].map((title, idx) => (
+            <div key={title} className="card" style={{ marginBottom: 0 }}>
+              <div className="img" style={{ backgroundImage: `url('${getPropertyImage(idx + 1)}')` }} />
+              <div className="body">
+                <div className="tag">{idx === 1 ? 'For Sale' : 'For Rent'}</div>
+                <div style={{ fontWeight: 700, color: '#111', marginTop: 6 }}>{title}</div>
+                <div style={{ color: '#6f6f6f', fontSize: 13 }}>
+                  {idx === 1 ? '₦120M' : '₦420k / month'}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className="footer-cta">
+        <PrimaryButton label="Contact Agent" filled />
+        <PrimaryButton label="Make Offer" filled />
+        <PrimaryButton label="Schedule Viewing" filled />
       </div>
     </div>
-    <div className="footer-cta">
-      <PrimaryButton label="Contact Agent" filled />
-      <PrimaryButton label="Make Offer" filled />
-      <PrimaryButton label="Schedule Viewing" filled />
-    </div>
-  </div>
-)
+  )
+}
 
 const BookingFlow = () => (
   <div className="screen">
@@ -2678,7 +2732,7 @@ function App() {
             ) : screen === 'inbox' ? (
               <InboxTab />
             ) : screen === 'search' ? (
-              <ExploreTab onSelectDetail={setDetailItem} />
+              <ExploreTab onSelectDetail={setDetailItem} onNavigate={setScreen} />
             ) : screen === 'wallet' ? (
               <WalletTab />
             ) : screen === 'profile' ? (
@@ -2688,7 +2742,7 @@ function App() {
             ) : screen === 'create-investment' ? (
               <CreateInvestment />
             ) : screen === 'property-detail' ? (
-              <PropertyDetail />
+              <PropertyDetail item={detailItem} />
             ) : screen === 'experience-detail' && detailItem && detailItem.type === 'experience' ? (
               <ExperienceDetail item={detailItem} />
             ) : screen === 'investment-detail' && detailItem && detailItem.type === 'investment' ? (
@@ -2748,3 +2802,99 @@ const LineChart = ({ points }: { points: number[] }) => {
     </svg>
   )
 }
+const ExperienceDetail = ({ item }: { item: DetailItem }) => (
+  <div className="screen">
+    <TopBar showBack showLogo />
+    <div className="card">
+      <div className="img" style={{ height: 210, backgroundImage: `url('${item.img}')` }} />
+      <div className="body">
+        <div className="tag">Experience</div>
+        <div style={{ fontWeight: 800, color: '#111', marginTop: 6 }}>{item.title}</div>
+        <div style={{ color: '#6f6f6f', fontSize: 13 }}>Victoria Island</div>
+        <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>{item.price}</div>
+        {item.date ? (
+          <div style={{ marginTop: 6, fontWeight: 600, color: '#111' }}>📅 {item.date}</div>
+        ) : null}
+        <div className="chip-row" style={{ marginTop: 8 }}>
+          {['Food', 'Music', 'Outdoor', 'Verified Host'].map((c) => (
+            <div key={c} className="chip">
+              {c}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div className="section">
+      <div className="label">Overview</div>
+      <div className="list-line">Curated dining + live music with waterfront vibes.</div>
+    </div>
+    <div className="section">
+      <div className="label">Host</div>
+      <div className="list-line">Brunch Club — 4.8 (120 reviews)</div>
+    </div>
+    <div className="footer-cta">
+      <PrimaryButton label="Book Experience" filled />
+      <PrimaryButton label="Contact Host" filled />
+    </div>
+  </div>
+)
+
+const InvestmentDetail = ({ item }: { item: DetailItem }) => (
+  <div className="screen">
+    <TopBar showBack showLogo />
+    <div className="card">
+      <div className="img" style={{ height: 210, backgroundImage: `url('${item.img}')` }} />
+      <div className="body">
+        <div className="tag">Investment</div>
+        <div style={{ fontWeight: 800, color: '#111', marginTop: 6 }}>{item.title}</div>
+        <div style={{ color: '#6f6f6f', fontSize: 13 }}>Lekki • Development</div>
+        <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>{item.price}</div>
+        <div className="progress-bar" style={{ marginTop: 8 }}>
+          <div className="progress-fill" style={{ width: '72%' }} />
+        </div>
+        <div className="meta-row" style={{ marginTop: 4 }}>
+          <span>72% funded</span>
+          <span className="pill-timer">18 days left</span>
+        </div>
+      </div>
+    </div>
+    <div className="section">
+      <div className="label">Details</div>
+      <div className="list-line">Min ₦100k • Expected ROI 14% • Quarterly payouts</div>
+    </div>
+    <div className="footer-cta">
+      <PrimaryButton label="Invest Now" filled />
+      <PrimaryButton label="View Deck" filled />
+    </div>
+  </div>
+)
+
+const ServiceDetail = ({ item }: { item: DetailItem }) => (
+  <div className="screen">
+    <TopBar showBack showLogo />
+    <div className="card">
+      <div className="img" style={{ height: 210, backgroundImage: `url('${item.img}')` }} />
+      <div className="body">
+        <div className="tag">Service</div>
+        <div style={{ fontWeight: 800, color: '#111', marginTop: 6 }}>{item.title}</div>
+        <div style={{ color: '#6f6f6f', fontSize: 13 }}>Lagos • Maintenance</div>
+        <div style={{ marginTop: 6, fontWeight: 700, color: '#111' }}>{item.price}</div>
+        <div className="chip-row" style={{ marginTop: 8 }}>
+          {['Electrical', 'Plumbing', 'Verified', 'Fast Response'].map((c) => (
+            <div key={c} className="chip">
+              {c}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div className="section">
+      <div className="label">About</div>
+      <div className="list-line">Trusted maintenance provider with 4.9 rating.</div>
+    </div>
+    <div className="footer-cta">
+      <PrimaryButton label="Book Service" filled />
+      <PrimaryButton label="Contact Provider" filled />
+    </div>
+  </div>
+)
