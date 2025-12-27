@@ -1813,9 +1813,9 @@ const HomeListingCard = ({
         position: 'relative',
       }}
     >
-        <div style={{ position: 'absolute', top: 10, left: 10, background: '#fff', padding: '4px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>
-          {tag}
-        </div>
+      <div style={{ position: 'absolute', top: 10, left: 10, background: '#fff', padding: '4px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>
+        {tag}
+      </div>
       <div style={{ position: 'absolute', top: 10, right: 10, background: '#fff', padding: 6, borderRadius: '50%' }}>♡</div>
     </div>
     <div className="body" style={{ paddingTop: 10 }}>
