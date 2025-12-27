@@ -67,7 +67,7 @@ const logoWhiteVertical = '/Logo%20v2%20Vertical%20White.png'
 
 type DetailItem =
   | { type: 'property'; title: string; img: string; price: string; meta?: string }
-  | { type: 'experience'; title: string; img: string; price: string; meta?: string }
+  | { type: 'experience'; title: string; img: string; price: string; meta?: string; date?: string }
   | { type: 'investment'; title: string; img: string; price: string; meta?: string }
   | { type: 'service'; title: string; img: string; price: string; meta?: string }
 
@@ -2802,7 +2802,7 @@ const LineChart = ({ points }: { points: number[] }) => {
     </svg>
   )
 }
-const ExperienceDetail = ({ item }: { item: DetailItem }) => (
+const ExperienceDetail = ({ item }: { item: DetailItem & { type: 'experience' } }) => (
   <div className="screen">
     <TopBar showBack showLogo />
     <div className="card">
