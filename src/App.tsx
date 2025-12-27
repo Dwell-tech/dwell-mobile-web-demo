@@ -1029,11 +1029,20 @@ const AgentStep3 = () => (
   >
     <div className="section">
       <div className="label">Professional Headshot</div>
-      <div className="upload-tile">Upload image</div>
+      <div className="upload-tile">
+        <span>🧑‍💼</span>
+        <span>Upload image</span>
+      </div>
       <div className="label">Agent License Document</div>
-      <div className="upload-tile">Upload PDF/JPG/PNG</div>
+      <div className="upload-tile">
+        <span>📄</span>
+        <span>Upload PDF/JPG/PNG</span>
+      </div>
       <div className="label">Identity Document</div>
-      <div className="upload-tile">Upload ID</div>
+      <div className="upload-tile">
+        <span>🪪</span>
+        <span>Upload ID</span>
+      </div>
     </div>
     <div className="chip-row">
       {['I confirm information is accurate', 'Accept terms for professionals', 'Accept commission structure'].map(
@@ -1164,9 +1173,15 @@ const OwnerStep3 = () => (
   >
     <div className="section">
       <div className="label">Property Ownership Documents</div>
-      <div className="upload-tile">Upload at least one property document</div>
+      <div className="upload-tile">
+        <span>🏠</span>
+        <span>Upload property document</span>
+      </div>
       <div className="label">Identity Document</div>
-      <div className="upload-tile">Upload ID</div>
+      <div className="upload-tile">
+        <span>🪪</span>
+        <span>Upload ID</span>
+      </div>
       <div className="label">Tax Identification Number</div>
       <InputField placeholder="Tax ID" value="TIN-234-884" active />
     </div>
@@ -1288,11 +1303,20 @@ const DeveloperStep4 = () => (
   >
     <div className="section">
       <div className="label">Company Registration Documents</div>
-      <div className="upload-tile">Upload PDF</div>
+      <div className="upload-tile">
+        <span>🏢</span>
+        <span>Upload registration PDF</span>
+      </div>
       <div className="label">Tax Identification Documents</div>
-      <div className="upload-tile">Upload TIN</div>
+      <div className="upload-tile">
+        <span>🧾</span>
+        <span>Upload TIN</span>
+      </div>
       <div className="label">Project Approval Documents</div>
-      <div className="upload-tile">Upload approvals</div>
+      <div className="upload-tile">
+        <span>📂</span>
+        <span>Upload approvals</span>
+      </div>
     </div>
     <div className="chip-row">
       {['Information accurate', 'Developer terms', 'Accept fees'].map((c, idx) => (
@@ -1391,9 +1415,15 @@ const ServiceStep3 = () => (
         ))}
       </div>
       <div className="label">Certifications & Licenses</div>
-      <div className="upload-tile">Upload certifications</div>
+      <div className="upload-tile">
+        <span>🏅</span>
+        <span>Upload certifications</span>
+      </div>
       <div className="label">Portfolio Showcase</div>
-      <div className="upload-tile">Add up to 10 works</div>
+      <div className="upload-tile">
+        <span>🖼️</span>
+        <span>Add up to 10 works</span>
+      </div>
     </div>
     <PrimaryButton label="Complete Profile" filled />
   </StepShell>
@@ -1463,7 +1493,10 @@ const LifestyleStep3 = () => (
   >
     <div className="section">
       <div className="label">Business Licenses & Certifications</div>
-      <div className="upload-tile">Upload certificates</div>
+      <div className="upload-tile">
+        <span>📜</span>
+        <span>Upload certificates</span>
+      </div>
       <div className="label">Partnership Opportunities</div>
       <div className="chip-row">
         {['Special offers for Dwell users', 'Exclusive experiences', 'Cross-promotion'].map(
@@ -1565,8 +1598,14 @@ const InvestStep3 = () => (
       <div className="label">Expected ROI Target</div>
       <div className="list-line">12-18% annually</div>
       <div className="label">Documents</div>
-      <div className="upload-tile">Upload proof of funds</div>
-      <div className="upload-tile">Upload entity registration</div>
+      <div className="upload-tile">
+        <span>💰</span>
+        <span>Upload proof of funds</span>
+      </div>
+      <div className="upload-tile">
+        <span>🏢</span>
+        <span>Upload entity registration</span>
+      </div>
     </div>
     <PrimaryButton label="Complete Profile" filled />
   </StepShell>
@@ -2534,10 +2573,10 @@ function App() {
         <div className="phone-frame">
           {screen !== 'splash' && <StatusBar />}
           <div style={{ paddingBottom: screen !== 'splash' ? 90 : 0, minHeight: '100%' }}>
-          {screen === 'splash' ? (
-            <SplashScreen onContinue={() => setScreen('signup-empty')} />
-          ) : screen === 'email-verification' ? (
-            <EmailVerification timeLeft={emailTimer} />
+            {screen === 'splash' ? (
+              <SplashScreen onContinue={() => setScreen('signup-empty')} />
+            ) : screen === 'email-verification' ? (
+              <EmailVerification timeLeft={emailTimer} />
             ) : screen === 'email-resend' ? (
               <EmailVerification timeLeft={emailTimer} canResend />
             ) : screen === 'otp' ? (
@@ -2598,27 +2637,27 @@ function App() {
               <InvestStep3 />
             ) : screen === 'transactions' ? (
               <TransactionDashboard />
-          ) : screen === 'invest-dashboard' ? (
-            <InvestmentExperience onCreate={() => setScreen('create-investment')} />
-          ) : screen === 'home' ? (
-            <HomeTab />
+            ) : screen === 'invest-dashboard' ? (
+              <InvestmentExperience onCreate={() => setScreen('create-investment')} />
+            ) : screen === 'home' ? (
+              <HomeTab />
             ) : screen === 'inbox' ? (
               <InboxTab />
             ) : screen === 'search' ? (
               <ExploreTab />
             ) : screen === 'wallet' ? (
               <WalletTab />
-          ) : screen === 'profile' ? (
-            <ProfileTab />
-          ) : screen === 'promotions' ? (
-            <PromotionsTab />
-          ) : screen === 'create-investment' ? (
-            <CreateInvestment />
-          ) : screen === 'property-detail' ? (
-            <PropertyDetail />
-          ) : screen === 'booking-flow' ? (
-            <BookingFlow />
-          ) : screen === 'booking-shortlet' ? (
+            ) : screen === 'profile' ? (
+              <ProfileTab />
+            ) : screen === 'promotions' ? (
+              <PromotionsTab />
+            ) : screen === 'create-investment' ? (
+              <CreateInvestment />
+            ) : screen === 'property-detail' ? (
+              <PropertyDetail />
+            ) : screen === 'booking-flow' ? (
+              <BookingFlow />
+            ) : screen === 'booking-shortlet' ? (
               <BookingShortlet />
             ) : (
               <OnboardingScreen mode={screen} />
