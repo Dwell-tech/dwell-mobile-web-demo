@@ -326,7 +326,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 20;
   padding: 12px 20px 18px;
   background: #fff;
   display: flex;

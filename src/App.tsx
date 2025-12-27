@@ -1,6 +1,11 @@
 import './App.css'
 
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import homeIcon from './assets/icons/vuesax/outline/home.svg'
+import inboxIcon from './assets/icons/vuesax/outline/message-2.svg'
+import searchIcon from './assets/icons/vuesax/outline/global.svg'
+import walletIcon from './assets/icons/vuesax/outline/wallet.svg'
+import profileIcon from './assets/icons/vuesax/outline/profile-circle.svg'
 
 type Screen =
   | 'signup-empty'
@@ -452,13 +457,26 @@ const SplashScreen = ({ onContinue }: { onContinue: () => void }) => (
 
 type NavKey = 'home' | 'inbox' | 'search' | 'wallet' | 'profile'
 
+const MaskIcon = ({ src, active }: { src: string; active: boolean }) => (
+  <span
+    style={{
+      width: 22,
+      height: 22,
+      display: 'inline-block',
+      backgroundColor: active ? accent : '#bcbcbc',
+      WebkitMask: `url(${src}) center / contain no-repeat`,
+      mask: `url(${src}) center / contain no-repeat`,
+    }}
+  />
+)
+
 const BottomNav = ({ active, onSelect }: { active: NavKey; onSelect: (key: NavKey) => void }) => {
-  const items: { key: NavKey; label: string; icon: JSX.Element }[] = [
-    { key: 'home', label: 'Home', icon: icons.home },
-    { key: 'inbox', label: 'Inbox', icon: icons.inbox },
-    { key: 'search', label: 'Search', icon: icons.search },
-    { key: 'wallet', label: 'Wallet', icon: icons.wallet },
-    { key: 'profile', label: 'Profile', icon: icons.profile },
+  const items: { key: NavKey; label: string; icon: string }[] = [
+    { key: 'home', label: 'Home', icon: homeIcon },
+    { key: 'inbox', label: 'Inbox', icon: inboxIcon },
+    { key: 'search', label: 'Search', icon: searchIcon },
+    { key: 'wallet', label: 'Wallet', icon: walletIcon },
+    { key: 'profile', label: 'Profile', icon: profileIcon },
   ]
   return (
     <div>
@@ -469,7 +487,9 @@ const BottomNav = ({ active, onSelect }: { active: NavKey; onSelect: (key: NavKe
             className={`nav-item ${item.key === active ? 'active' : ''}`}
             onClick={() => onSelect(item.key)}
           >
-            <div className="nav-icon">{item.icon}</div>
+            <div className="nav-icon">
+              <MaskIcon src={item.icon} active={item.key === active} />
+            </div>
             <div>{item.label}</div>
           </div>
         ))}
@@ -799,33 +819,6 @@ const LoginOtp = ({ timeLeft = 50 }: { timeLeft?: number }) => {
     </div>
   )
 }
-
-const TabPlaceholder = ({ title, body }: { title: string; body: string }) => (
-  <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
-    <div className="heading-block">
-      <h1>{title}</h1>
-      <p>{body}</p>
-    </div>
-    <div
-      style={{
-        marginTop: 8,
-        borderRadius: 12,
-        background: '#fff',
-        padding: 16,
-        border: '1px solid #e6e6e6',
-      }}
-    >
-      <div style={{ fontWeight: 700, marginBottom: 8, color: '#111' }}>Placeholder</div>
-      <div style={{ color: '#6f6f6f', fontSize: 14 }}>
-        Static preview of this tab while we build out the full experience.
-      </div>
-    </div>
-  </div>
-)
 
 const StepShell = ({
   title,
