@@ -29,6 +29,7 @@ type Screen =
   | 'booking-flow'
   | 'booking-shortlet'
   | 'create-investment'
+  | 'splash'
   | 'verify-method'
   | 'verify-processing'
   | 'verify-success'
@@ -53,6 +54,8 @@ type Screen =
   | 'invest-step3'
 
 const accent = '#d44260'
+const logoBlack = '/Logo%20v2%20Black.png'
+const logoWhiteVertical = '/Logo%20v2%20Vertical%20White.png'
 
 const propertyImages = [
   'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=60',
@@ -97,6 +100,7 @@ const screenFlows: { title: string; screens: Screen[] }[] = [
   {
     title: 'Onboarding & Verification',
     screens: [
+      'splash',
       'signup-empty',
       'signup-email',
       'signup-weak',
@@ -405,6 +409,44 @@ const StatusBar = () => (
     <span>9:41</span>
     <div />
     <span>⋯</span>
+  </div>
+)
+
+const TopBar = ({
+  showBack,
+  showLogo,
+  trailing,
+}: {
+  showBack?: boolean
+  showLogo?: boolean
+  trailing?: ReactNode
+}) => (
+  <div className="nav-row" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      {showBack ? <div className="back-btn">{icons.back}</div> : null}
+      {showLogo ? <img src={logoBlack} alt="Dwell" style={{ height: 26 }} /> : null}
+    </div>
+    {trailing ?? <span style={{ fontSize: 18 }}>⋯</span>}
+  </div>
+)
+
+const SplashScreen = ({ onContinue }: { onContinue: () => void }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      minHeight: '844px',
+      background: accent,
+      color: '#fff',
+      gap: 24,
+    }}
+  >
+    <img src={logoWhiteVertical} alt="Dwell" style={{ height: 160 }} />
+    <PrimaryButton label="Get Started" filled onClick={onContinue} />
   </div>
 )
 
@@ -799,10 +841,7 @@ const StepShell = ({
   children: ReactNode
 }) => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack />
     <div className="progress">
       <div className="pill">
         Step {step} of {total}
@@ -821,10 +860,7 @@ const StepShell = ({
 
 const VerifyMethod = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack />
     <div className="heading-block">
       <h1>Choose Verification Method</h1>
       <p>Select your preferred identification document</p>
@@ -848,11 +884,7 @@ const VerifyMethod = () => (
 
 const VerifyProcessing = () => (
   <div className="screen center">
-    <div className="nav-row" style={{ justifyContent: 'space-between' }}>
-      <div />
-      {icons.notch}
-      <div />
-    </div>
+    <TopBar />
     <div className="success-hero">
       <div className="checkmark" style={{ background: '#111' }}>
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
@@ -894,11 +926,7 @@ const VerifyProcessing = () => (
 
 const VerifySuccess = () => (
   <div className="screen center">
-    <div className="nav-row" style={{ justifyContent: 'space-between' }}>
-      <div />
-      {icons.notch}
-      <div />
-    </div>
+    <TopBar />
     <div className="success-hero">
       <div className="checkmark">{icons.check}</div>
     </div>
@@ -1546,9 +1574,7 @@ const InvestStep3 = () => (
 
 const HomeTab = () => (
   <div className="screen">
-    <div className="nav-row" style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
-      <span style={{ fontSize: 18 }}>⋯</span>
-    </div>
+    <TopBar showLogo trailing={<span style={{ fontSize: 18 }}>⋯</span>} />
 
     <div className="section" style={{ border: 'none', padding: 0, gap: 10 }}>
       <div className="meta-row" style={{ gap: 10, fontSize: 13, color: '#111' }}>
@@ -1564,6 +1590,13 @@ const HomeTab = () => (
       <div className="input-shell clickable" style={{ marginTop: 4 }}>
         <span className="input-icon">🔍</span>
         <input placeholder="Search any location" readOnly />
+      </div>
+      <div className="chip-row">
+        {['All', 'Rent', 'Sale', 'Short Let', 'Experiences', 'Investments'].map((c, idx) => (
+          <div key={c} className={`chip ${idx === 0 ? 'active' : ''}`}>
+            {c}
+          </div>
+        ))}
       </div>
     </div>
 
@@ -1725,10 +1758,7 @@ const ExploreTab = () => {
 
   return (
     <div className="screen">
-      <div className="nav-row">
-        <div className="back-btn">{icons.back}</div>
-        {icons.notch}
-      </div>
+      <TopBar showLogo />
       <div className="heading-block">
         <h1>Explore</h1>
         <p>Discover properties, experiences, investments, services</p>
@@ -1774,10 +1804,7 @@ const ExploreTab = () => {
 
 const PromotionsTab = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showLogo />
     <div className="heading-block">
       <h1>Promotions & Offers</h1>
       <p>Top deals across properties, lifestyle, and services</p>
@@ -1809,10 +1836,7 @@ const PromotionsTab = () => (
 
 const TransactionDashboard = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showLogo />
     <div className="heading-block">
       <h1>Transactions</h1>
       <p>Wallet activity and spending analysis</p>
@@ -1904,10 +1928,7 @@ const InvestmentExperience = ({ onCreate }: { onCreate: () => void }) => {
 
   return (
     <div className="screen">
-      <div className="nav-row">
-        <div className="back-btn">{icons.back}</div>
-        {icons.notch}
-      </div>
+      <TopBar showLogo />
       <div className="heading-block">
         <h1>Investment Opportunities</h1>
         <p>Explore verified projects and track your portfolio</p>
@@ -2030,10 +2051,7 @@ const InvestmentExperience = ({ onCreate }: { onCreate: () => void }) => {
 
 const CreateInvestment = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack showLogo />
     <div className="heading-block">
       <h1>Create Investment</h1>
       <p>Set up a new opportunity for investors</p>
@@ -2111,10 +2129,7 @@ const CreateInvestment = () => (
 
 const InboxTab = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showLogo />
     <div className="heading-block">
       <h1>Inbox</h1>
       <p>All conversations across properties, bookings, and services</p>
@@ -2144,10 +2159,7 @@ const InboxTab = () => (
 
 const WalletTab = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showLogo />
     <div className="heading-block">
       <h1>Dwell Wallet</h1>
       <p>Manage balance and transactions</p>
@@ -2191,10 +2203,7 @@ const WalletTab = () => (
 
 const ProfileTab = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showLogo />
     <div className="heading-block">
       <h1>Profile</h1>
       <p>Manage info, security, and preferences</p>
@@ -2224,10 +2233,7 @@ const ProfileTab = () => (
 
 const PropertyDetail = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack showLogo />
     <div className="card">
       <div
         className="img"
@@ -2321,10 +2327,7 @@ const PropertyDetail = () => (
 
 const BookingFlow = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack showLogo />
     <div className="heading-block">
       <h1>Book Ikoyi Garden Suites</h1>
       <p>Confirm dates, guests, and fees</p>
@@ -2369,10 +2372,7 @@ const BookingFlow = () => (
 
 const BookingShortlet = () => (
   <div className="screen">
-    <div className="nav-row">
-      <div className="back-btn">{icons.back}</div>
-      {icons.notch}
-    </div>
+    <TopBar showBack showLogo />
     <div className="heading-block">
       <h1>Book VI Waterfront Loft</h1>
       <p>Confirm stay dates and guests</p>
@@ -2463,7 +2463,7 @@ const NavArrows = ({ current, onChange }: { current: Screen; onChange: (s: Scree
 }
 
 function App() {
-  const [screen, setScreen] = useState<Screen>('signup-filled')
+  const [screen, setScreen] = useState<Screen>('splash')
   const [emailTimer, setEmailTimer] = useState(45)
   const [otpTimer, setOtpTimer] = useState(55)
 
@@ -2498,6 +2498,7 @@ function App() {
   }, [screen])
 
   const onboardingScreens = new Set<Screen>([
+    'splash',
     'signup-empty',
     'signup-email',
     'signup-weak',
@@ -2531,10 +2532,12 @@ function App() {
     <>
       <div className="app-shell">
         <div className="phone-frame">
-          <StatusBar />
-          <div style={{ paddingBottom: 90 }}>
-            {screen === 'email-verification' ? (
-              <EmailVerification timeLeft={emailTimer} />
+          {screen !== 'splash' && <StatusBar />}
+          <div style={{ paddingBottom: screen !== 'splash' ? 90 : 0, minHeight: '100%' }}>
+          {screen === 'splash' ? (
+            <SplashScreen onContinue={() => setScreen('signup-empty')} />
+          ) : screen === 'email-verification' ? (
+            <EmailVerification timeLeft={emailTimer} />
             ) : screen === 'email-resend' ? (
               <EmailVerification timeLeft={emailTimer} canResend />
             ) : screen === 'otp' ? (
