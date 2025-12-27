@@ -1726,55 +1726,6 @@ const HomeTab = ({
   </div>
 )
 
-const PropertyCard = ({
-  img,
-  title,
-  price,
-  rating = '4.8',
-  reviews = '50',
-  tag = 'Promoted',
-  onSelect,
-}: {
-  img: string
-  title: string
-  price: string
-  rating?: string
-  reviews?: string
-  tag?: string
-  onSelect?: () => void
-}) => (
-  <div
-    className="card clickable"
-    style={{ display: 'flex', gap: 12, padding: 10, minWidth: '88%' }}
-    onClick={onSelect}
-  >
-    <div
-      style={{
-        width: 110,
-        minWidth: 110,
-        height: 90,
-        borderRadius: 10,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundImage: `url('${img}')`,
-      }}
-    />
-    <div className="body" style={{ padding: 0, flex: 1 }}>
-      <div className="tag">{tag}</div>
-      <div style={{ fontWeight: 700, color: '#111', marginTop: 6 }}>{title}</div>
-      <div className="meta-row">
-        <span>⭐️ {rating} ({reviews} reviews)</span>
-        <span>Posted by 👤</span>
-      </div>
-      <div className="meta-row" style={{ marginTop: 4 }}>
-        <span>🛏️ 5</span>
-        <span>🛁 5</span>
-      </div>
-      <div style={{ marginTop: 4, fontWeight: 700, color: '#111' }}>{price}</div>
-    </div>
-  </div>
-)
-
 const HomeListingCard = ({
   img,
   title,
