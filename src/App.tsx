@@ -78,6 +78,13 @@ const experienceImages = [
   'https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=900&q=60',
 ]
 
+const serviceImages = [
+  'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1484156818044-c040038b0710?auto=format&fit=crop&w=900&q=60',
+]
+
 const investImages = [
   'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=60',
@@ -1775,12 +1782,12 @@ const ExploreTab = () => {
     { type: 'Properties', title: 'Marina View Apartments', meta: '₦320k / month • Lekki', img: getPropertyImage(0), h: 220 },
     { type: 'Experiences', title: 'Sunday Brunch at the Lagoon', meta: '₦25k • Victoria Island', img: experienceImages[0], h: 260 },
     { type: 'Investments', title: 'Lekki Co-ownership', meta: 'Min ₦100k • 14% ROI', img: investImages[0], h: 230 },
-    { type: 'Services', title: 'Uche Maintenance', meta: 'Electric + Plumbing • Lagos', img: exploreImages[8], h: 200 },
+    { type: 'Services', title: 'Uche Maintenance', meta: 'Electric + Plumbing • Lagos', img: serviceImages[0], h: 200 },
     { type: 'Properties', title: 'Ikoyi Garden Suites', meta: '₦520k / month', img: getPropertyImage(1), h: 260 },
     { type: 'Experiences', title: 'Live Music Night', meta: '₦18k • Ikoyi', img: experienceImages[1], h: 200 },
     { type: 'Investments', title: 'VI Offices REIT', meta: 'Min ₦500k • 18% ROI', img: investImages[1], h: 240 },
     { type: 'Promotions', title: 'Gold Promo Bundle', meta: '10% off boosts', img: exploreImages[6], h: 190 },
-    { type: 'Services', title: 'Interior Design', meta: 'Bella Interiors • Lagos', img: exploreImages[9], h: 230 },
+    { type: 'Services', title: 'Interior Design', meta: 'Bella Interiors • Lagos', img: serviceImages[2], h: 230 },
     { type: 'Properties', title: 'Banana Island Duplex', meta: '₦120M • For Sale', img: getPropertyImage(2), h: 250 },
     { type: 'Experiences', title: 'Chef’s Table', meta: '₦45k • Lekki', img: experienceImages[3], h: 210 },
     { type: 'Investments', title: 'Ikoyi Flip', meta: 'Min ₦750k • 22% ROI', img: investImages[2], h: 260 },
