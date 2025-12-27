@@ -464,8 +464,8 @@ const MaskIcon = ({ src, active }: { src: string; active: boolean }) => (
       height: 22,
       display: 'inline-block',
       backgroundColor: active ? accent : '#bcbcbc',
-      WebkitMask: `url(${src}) center / contain no-repeat`,
-      mask: `url(${src}) center / contain no-repeat`,
+      WebkitMask: `url("${src}") no-repeat center / contain`,
+      mask: `url("${src}") no-repeat center / contain`,
     }}
   />
 )
