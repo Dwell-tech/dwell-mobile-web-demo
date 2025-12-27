@@ -31,6 +31,9 @@ type Screen =
   | 'transactions'
   | 'invest-dashboard'
   | 'property-detail'
+  | 'experience-detail'
+  | 'investment-detail'
+  | 'service-detail'
   | 'booking-flow'
   | 'booking-shortlet'
   | 'create-investment'
@@ -62,12 +65,18 @@ const accent = '#d44260'
 const logoBlack = '/Logo%20v2%20Black.png'
 const logoWhiteVertical = '/Logo%20v2%20Vertical%20White.png'
 
+type DetailItem =
+  | { type: 'property'; title: string; img: string; price: string; meta?: string }
+  | { type: 'experience'; title: string; img: string; price: string; meta?: string }
+  | { type: 'investment'; title: string; img: string; price: string; meta?: string }
+  | { type: 'service'; title: string; img: string; price: string; meta?: string }
+
 const propertyImages = [
   'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1505692069463-94d38117c63f?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=60',
   'https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=900&q=60',
-  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=60',
+  'https://images.unsplash.com/photo-1484156818044-c040038b0710?auto=format&fit=crop&w=900&q=60',
 ]
 
 const experienceImages = [
@@ -151,6 +160,9 @@ const screenFlows: { title: string; screens: Screen[] }[] = [
       'invest-dashboard',
       'create-investment',
       'property-detail',
+      'experience-detail',
+      'investment-detail',
+      'service-detail',
       'booking-flow',
       'booking-shortlet',
     ],
@@ -1611,7 +1623,13 @@ const InvestStep3 = () => (
   </StepShell>
 )
 
-const HomeTab = () => (
+const HomeTab = ({
+  onSelectDetail,
+  onNavigate,
+}: {
+  onSelectDetail: (item: DetailItem) => void
+  onNavigate: (s: Screen) => void
+}) => (
   <div className="screen">
     <TopBar showLogo trailing={<span style={{ fontSize: 18 }}>⋯</span>} />
 
@@ -1649,16 +1667,32 @@ const HomeTab = () => (
       </div>
     </div>
 
-    {renderHomeSection('Promoted', propertyImages.slice(0, 3))}
-    {renderHomeSection('Highest Ratings', propertyImages.slice(2, 5))}
-    {renderHomeSection('New', propertyImages.slice(1, 4))}
-    {renderHomeSection('Best Hosts', propertyImages.slice(0, 2))}
-    {renderHomeSection('Based on Location', propertyImages.slice(3, 5))}
-    {renderHomeSection('Favorites', propertyImages.slice(0, 2))}
+    {renderHomeSection('Promoted', propertyImages.slice(0, 3), (img) =>
+      onSelectDetail({ type: 'property', title: 'Hov Beach Resort', img, price: '₦125,000 / night' }),
+    )}
+    {renderHomeSection('Highest Ratings', propertyImages.slice(2, 5), (img) =>
+      onSelectDetail({ type: 'property', title: 'Ikoyi Garden Suites', img, price: '₦520k / month' }),
+    )}
+    {renderHomeSection('New', propertyImages.slice(1, 4), (img) =>
+      onSelectDetail({ type: 'property', title: 'Victoria Island Loft', img, price: '₦420k / month' }),
+    )}
+    {renderHomeSection('Best Hosts', propertyImages.slice(0, 2), (img) =>
+      onSelectDetail({ type: 'property', title: 'Host Collection', img, price: '₦300k / month' }),
+    )}
+    {renderHomeSection('Based on Location', propertyImages.slice(3, 5), (img) =>
+      onSelectDetail({ type: 'property', title: 'Lekki Picks', img, price: '₦280k / month' }),
+    )}
+    {renderHomeSection('Favorites', propertyImages.slice(0, 2), (img) =>
+      onSelectDetail({ type: 'property', title: 'Saved Stay', img, price: '₦200k / month' }),
+    )}
 
     <HorizontalSection
       title="Experiences near you"
       tag="Experience"
+      onSelect={(item) => {
+        onSelectDetail({ type: 'experience', ...item })
+        onNavigate('experience-detail')
+      }}
       items={experienceImages.map((img, idx) => ({
         img,
         title: idx % 2 === 0 ? 'Sunday Brunch Lagoon' : 'Live Music Night',
@@ -1670,6 +1704,10 @@ const HomeTab = () => (
     <HorizontalSection
       title="Investment Opportunities"
       tag="Investment"
+      onSelect={(item) => {
+        onSelectDetail({ type: 'investment', ...item })
+        onNavigate('investment-detail')
+      }}
       items={investImages.map((img, idx) => ({
         img,
         title: idx === 0 ? 'Lekki Waterfront Fund' : idx === 1 ? 'VI Offices REIT' : 'Ikoyi Flip',
@@ -1687,6 +1725,7 @@ const PropertyCard = ({
   rating = '4.8',
   reviews = '50',
   tag = 'Promoted',
+  onSelect,
 }: {
   img: string
   title: string
@@ -1694,8 +1733,13 @@ const PropertyCard = ({
   rating?: string
   reviews?: string
   tag?: string
+  onSelect?: () => void
 }) => (
-  <div className="card clickable" style={{ display: 'flex', gap: 12, padding: 10, minWidth: '88%' }}>
+  <div
+    className="card clickable"
+    style={{ display: 'flex', gap: 12, padding: 10, minWidth: '88%' }}
+    onClick={onSelect}
+  >
     <div
       style={{
         width: 110,
@@ -2353,13 +2397,9 @@ const PropertyDetail = () => (
       </div>
     </div>
     <div className="footer-cta">
-      <div className="dual-cta">
-        <PrimaryButton label="Contact Agent" filled />
-        <PrimaryButton label="Make Offer" filled />
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <PrimaryButton label="Schedule Viewing" filled />
-      </div>
+      <PrimaryButton label="Contact Agent" filled />
+      <PrimaryButton label="Make Offer" filled />
+      <PrimaryButton label="Schedule Viewing" filled />
     </div>
   </div>
 )
@@ -2398,13 +2438,9 @@ const BookingFlow = () => (
       <div className="list-line">I accept cancellation policy and escrow release terms.</div>
     </div>
     <div className="footer-cta">
-      <div className="dual-cta">
-        <PrimaryButton label="Contact Agent" filled />
-        <PrimaryButton label="View Terms" filled />
-      </div>
-      <div style={{ marginTop: 10 }}>
+      <PrimaryButton label="Contact Agent" filled />
+      <PrimaryButton label="View Terms" filled />
       <PrimaryButton label="Submit Booking" filled />
-      </div>
     </div>
   </div>
 )
@@ -2436,13 +2472,9 @@ const BookingShortlet = () => (
       <div className="list-line">Moderate policy: Full refund up to 5 days before check-in.</div>
     </div>
     <div className="footer-cta">
-      <div className="dual-cta">
-        <PrimaryButton label="Contact Host" filled />
-        <PrimaryButton label="Add Payment" filled />
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <PrimaryButton label="Book Now" filled />
-      </div>
+      <PrimaryButton label="Contact Host" filled />
+      <PrimaryButton label="Add Payment" filled />
+      <PrimaryButton label="Book Now" filled />
     </div>
   </div>
 )
@@ -2505,6 +2537,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>('splash')
   const [emailTimer, setEmailTimer] = useState(45)
   const [otpTimer, setOtpTimer] = useState(55)
+  const [detailItem, setDetailItem] = useState<DetailItem | null>(null)
 
   useEffect(() => {
     let timerId: number | undefined
@@ -2641,11 +2674,11 @@ function App() {
             ) : screen === 'invest-dashboard' ? (
               <InvestmentExperience onCreate={() => setScreen('create-investment')} />
             ) : screen === 'home' ? (
-              <HomeTab />
+              <HomeTab onSelectDetail={setDetailItem} onNavigate={setScreen} />
             ) : screen === 'inbox' ? (
               <InboxTab />
             ) : screen === 'search' ? (
-              <ExploreTab />
+              <ExploreTab onSelectDetail={setDetailItem} />
             ) : screen === 'wallet' ? (
               <WalletTab />
             ) : screen === 'profile' ? (
@@ -2656,6 +2689,12 @@ function App() {
               <CreateInvestment />
             ) : screen === 'property-detail' ? (
               <PropertyDetail />
+            ) : screen === 'experience-detail' && detailItem && detailItem.type === 'experience' ? (
+              <ExperienceDetail item={detailItem} />
+            ) : screen === 'investment-detail' && detailItem && detailItem.type === 'investment' ? (
+              <InvestmentDetail item={detailItem} />
+            ) : screen === 'service-detail' && detailItem && detailItem.type === 'service' ? (
+              <ServiceDetail item={detailItem} />
             ) : screen === 'booking-flow' ? (
               <BookingFlow />
             ) : screen === 'booking-shortlet' ? (
