@@ -2566,13 +2566,14 @@ function App() {
           : screen === 'profile'
             ? 'profile'
             : 'home'
+  const showNav = !isOnboarding
 
   return (
     <>
       <div className="app-shell">
         <div className="phone-frame">
           {screen !== 'splash' && <StatusBar />}
-          <div style={{ paddingBottom: screen !== 'splash' ? 90 : 0, minHeight: '100%' }}>
+          <div style={{ paddingBottom: showNav ? 140 : 0, minHeight: '100%' }}>
             {screen === 'splash' ? (
               <SplashScreen onContinue={() => setScreen('signup-empty')} />
             ) : screen === 'email-verification' ? (
@@ -2663,7 +2664,7 @@ function App() {
               <OnboardingScreen mode={screen} />
             )}
           </div>
-          {!isOnboarding && (
+          {showNav && (
             <BottomNav
               active={navActive}
               onSelect={(key) =>
